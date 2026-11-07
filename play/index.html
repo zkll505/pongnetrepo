@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+<title>PongNet</title>
+<style>
+html, body { margin: 0; height: 100%; background: #0a0f1e; overflow: hidden; touch-action: none; }
+#canvas { display: block; width: 100%; height: 100%; outline: none; }
+#status { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #e6edf7; font: 20px system-ui, sans-serif; text-align: center; padding: 16px; pointer-events: none; }
+</style>
+<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+</head>
+<body>
+<canvas id="canvas" tabindex="0">Your browser does not support the canvas tag.</canvas>
+<div id="status" role="status">Loading PongNet</div>
+<script src="index.js"></script>
+<script>
+// Godot's default shell refuses to start outside a "secure context", which rules
+// out classmates opening http://<lan-ip>:8000. Only threads and the audio driver
+// need one, and this build has neither (project.godot sets the Dummy audio driver),
+// so this shell leaves that check out.
+const status = document.getElementById('status');
+new Engine({"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":38704,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4}).startGame({
+	onProgress: (current, total) => {
+		if (total > 0) status.textContent = 'Loading PongNet ' + Math.round(current / total * 100) + '%';
+	},
+}).then(() => status.remove(), (err) => {
+	status.textContent = 'PongNet could not start: ' + err;
+});
+</script>
+</body>
+</html>
+
